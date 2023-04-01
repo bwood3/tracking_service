@@ -28,10 +28,19 @@ public class TrackingController {
         Item item = invoiceItem.findItemById(itemID);
         if(item == null)
             throw new IllegalStateException("404 error\norder with item id does not exist in the system");
-        return new Item();
+        return item;
     }
 
     @ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "order with this id does not exist in the system")
     public static class IdNotFoundException extends RuntimeException {
+    }
+
+    @PutMapping("/{orderID}")
+    public void updateTracking(@RequestBody Tracking t, @PathVariable int orderID)
+    {
+        System.out.println(t.getItemId());
+        System.out.println(t.getStatus());
+
+        repository.update(t, orderID);
     }
 }

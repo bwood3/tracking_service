@@ -2,6 +2,7 @@ package com.example.tracking_service.repository;
 
 import com.example.tracking_service.model.Invoice;
 import com.example.tracking_service.model.InvoiceItem;
+import com.example.tracking_service.model.Tracking;
 import com.example.tracking_service.model.invoiceItemFields.Item;
 import com.example.tracking_service.model.invoiceItemFields.ShippingAddress;
 import com.example.tracking_service.model.paymentFields.BillingAddress;
@@ -15,6 +16,21 @@ import java.util.List;
 public class TrackingRepository {
     private List<Invoice> invoices = loadTempDatabase();
 
+    public void update(Tracking t, int orderID)
+    {
+        int itemID = t.getItemId();
+        String status = t.getStatus();
+        Invoice i = getInvoiceByID(orderID);
+        InvoiceItem items = i.getInvoiceItem();
+        Item itemToUpdate = items.findItemById(itemID);
+        itemToUpdate.setItemStatus(t.getStatus());
+    }
+
+    public Invoice getInvoiceByID(int id)
+    {
+        Invoice r = invoices.stream().filter(x -> x.getOrderID() == id).findAny().orElse(null);
+        return r;
+    }
     public Invoice getTrackingOrderByID(int id)
     {
         Invoice r = invoices.stream().filter(x -> x.getOrderID() == id).findAny().orElse(null);
