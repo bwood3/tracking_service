@@ -1,9 +1,40 @@
 package com.example.tracking_service.model;
 
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "tracking",uniqueConstraints = {@UniqueConstraint(columnNames = {"orderId", "itemId"})})
 public class Tracking {
-    private String status;
-    private String date;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private int orderId;
+
     private int itemId;
+
+    private String status;
+
+    private LocalDate date;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
     public int getItemId() {
         return itemId;
@@ -21,11 +52,11 @@ public class Tracking {
         this.status = status;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }
